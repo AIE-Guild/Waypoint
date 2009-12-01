@@ -1,0 +1,302 @@
+﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="Frame.lua" />
+	<Button name="wpConEntryTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="564" y="24" />
+		</Size>
+		<NormalFont style="GameFontNormal"/>
+	</Button>
+	<Button name="wpConEntry1" inherits="wpConEntryTemplate">
+		<Anchors>
+			<Anchor point="TOPLEFT" relativeTo="wpConList" relativePoint="TOPLEFT">
+				<Offset x="32" y="-32" />
+			</Anchor>
+		</Anchors>
+	</Button>
+	<Button name="wpConEntry2" inherits="wpConEntryTemplate">
+		<Anchors>
+			<Anchor point="TOPLEFT" relativeTo="wpConEntry1" relativePoint="BOTTOMLEFT">
+				<Offset x="0" y="0" />
+			</Anchor>
+		</Anchors>
+	</Button>
+	<Button name="wpConEntry3" inherits="wpConEntryTemplate">
+		<Anchors>
+			<Anchor point="TOPLEFT" relativeTo="wpConEntry2" relativePoint="BOTTOMLEFT">
+				<Offset x="0" y="0" />
+			</Anchor>
+		</Anchors>
+	</Button>
+	<Button name="wpConEntry4" inherits="wpConEntryTemplate">
+		<Anchors>
+			<Anchor point="TOPLEFT" relativeTo="wpConEntry3" relativePoint="BOTTOMLEFT">
+				<Offset x="0" y="0" />
+			</Anchor>
+		</Anchors>
+	</Button>
+	<Button name="wpConEntry5" inherits="wpConEntryTemplate">
+		<Anchors>
+			<Anchor point="TOPLEFT" relativeTo="wpConEntry4" relativePoint="BOTTOMLEFT">
+				<Offset x="0" y="0" />
+			</Anchor>
+		</Anchors>
+	</Button>
+	<Button name="wpConEntry6" inherits="wpConEntryTemplate">
+		<Anchors>
+			<Anchor point="TOPLEFT" relativeTo="wpConEntry5" relativePoint="BOTTOMLEFT">
+				<Offset x="0" y="0" />
+			</Anchor>
+		</Anchors>
+	</Button>
+	<Frame name="wpFrame" parent="UIParent" toplevel="true" movable="true" enableMouse="true">
+		<Size>
+			<AbsDimension x="640" y="480" />
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset x="5" y="-8" />
+			</Anchor>
+		</Anchors>
+		<TitleRegion setAllPoints="true">
+			<Size>
+				<AbsDimension x="0" y="30" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" />
+				<Anchor point="TOPRIGHT" />
+			</Anchors>
+		</TitleRegion>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11" />
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32" />
+			</EdgeSize>
+		</Backdrop>
+		<Frames>
+			<Button name="wpMsgClearButton" inherits="UIPanelButtonTemplate" text="Clear">
+				<Size>
+					<AbsDimension x="64" y="24" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="404" y="-130" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>wpMsgClearButton_OnClick();</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="wpToggleButton" inherits="UIPanelButtonTemplate" text="Toggle">
+				<Size>
+					<AbsDimension x="128" y="24" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="134" y="-32" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>wpToggleButton_OnClick();</OnClick>
+				</Scripts>
+			</Button>
+			<CheckButton name="wpAutoCloseCheckButton" inherits="UICheckButtonTemplate" text="CheckButton1">
+				<Size>
+					<AbsDimension x="24" y="24" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="32" y="-130" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>wpAutoCloseCheckButton_OnClick();</OnClick>
+				</Scripts>
+			</CheckButton>
+			<Button name="wpConClearButton" inherits="UIPanelButtonTemplate" text="Clear All Contacts">
+				<Size>
+					<AbsDimension x="160" y="24" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="32" y="-424" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="wpConNameSortButton" inherits="UIPanelButtonTemplate" text="Name">
+				<Size>
+					<AbsDimension x="128" y="24" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="102" y="-180" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="wpConLevelSortButton" inherits="UIPanelButtonTemplate" text="Level">
+				<Size>
+					<AbsDimension x="128" y="24" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="236" y="-180" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="wpConTimestampSortButton" inherits="UIPanelButtonTemplate" text="Timestamp">
+				<Size>
+					<AbsDimension x="128" y="24" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="370" y="-180" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="wpMsgCancelButton" inherits="UIPanelButtonTemplate" text="Cancel">
+				<Size>
+					<AbsDimension x="64" y="24" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="544" y="-130" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>wpMsgCancelButton_OnClick();</OnClick>
+					<OnShow>wpMsgCancelButton_OnShow();</OnShow>
+				</Scripts>
+			</Button>
+			<Button name="wpCloseButton" inherits="UIPanelButtonTemplate" text="Close">
+				<Size>
+					<AbsDimension x="64" y="24" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="544" y="-32" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>wpCloseButton_OnClick();</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="wpMsgSaveButton" inherits="UIPanelButtonTemplate" text="Save">
+				<Size>
+					<AbsDimension x="64" y="24" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="474" y="-130" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>wpMsgSaveButton_OnClick();</OnClick>
+					<OnShow>wpMsgSaveButton_OnShow();</OnShow>
+				</Scripts>
+				<NormalFont style="GameFontNormal" />
+			</Button>
+			<EditBox name="wpMsgEditBox" inherits="InputBoxTemplate" enableKeyboard="true" letters="255" autoFocus="false">
+				<Size>
+					<AbsDimension x="576" y="32" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="32" y="-92" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnHide>wpMsgEditBox_OnHide();</OnHide>
+					<OnTextChanged>wpMsgEditBox_OnTextChanged();</OnTextChanged>
+				</Scripts>
+			</EditBox>
+			<ScrollFrame name="wpConList" inherits="FauxScrollFrameTemplate">
+				<Size>
+					<AbsDimension x="564" y="208" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="32" y="-210" />
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+					<BackgroundInsets>
+						<AbsInset left="11" right="12" top="12" bottom="11" />
+					</BackgroundInsets>
+					<TileSize>
+						<AbsValue val="32" />
+					</TileSize>
+					<EdgeSize>
+						<AbsValue val="32" />
+					</EdgeSize>
+				</Backdrop>
+				<Scripts>
+					<OnVerticalScroll>wpConList_OnVerticalScroll();</OnVerticalScroll>
+					<OnShow>wpConList_OnShow();</OnShow>
+				</Scripts>
+			</ScrollFrame>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="wpFrameLabel" inherits="GameFontNormal" text="Waypoint">
+					<Size>
+						<AbsDimension x="80" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="10" y="-4" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="wpMsgEditLabel" inherits="GameFontNormal" text="Waypoint Message" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="140" y="24" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="32" y="-62" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="wpAutoCloseLabel" inherits="GameFontNormal" text="Auto-close Trade Windows" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="177" y="24" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="62" y="-130" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="wpStatusText" inherits="GameFontNormal" text="Unknown" outline="NORMAL">
+					<Size>
+						<AbsDimension x="96" y="24" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="32" y="-32" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="wpConSortLabel" inherits="GameFontNormal" text="Sort By:" justifyH="RIGHT">
+					<Size>
+						<AbsDimension x="64" y="24" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="32" y="-180" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>wpFrame_OnLoad();</OnLoad>
+			<OnEvent>wpFrame_OnEvent();</OnEvent>
+			<OnShow>wpFrame_OnShow();</OnShow>
+		</Scripts>
+	</Frame>
+</Ui>

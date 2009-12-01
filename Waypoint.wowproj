@@ -1,0 +1,38 @@
+﻿<Project DefaultTargets="Deploy" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Name>Waypoint</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ba31e0c8-b1f5-449b-b127-f0f523675a1f}</ProjectGuid>
+    <AssemblyName>Waypoint</AssemblyName>
+    <RootNamespace>Waypoint</RootNamespace>
+    <WowPath>C:\Program Files\World of Warcraft\</WowPath>
+    <AddonTitle>Waypoint</AddonTitle>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WowAddonStudio\2.0\WowAddonStudio.targets" />
+  <ItemGroup>
+    <Content Include="Waypoint.toc">
+      <SubType>TableOfContents</SubType>
+    </Content>
+    <Content Include="wpFrame.xml">
+      <SubType>Frame</SubType>
+    </Content>
+    <Content Include="wpFrame.lua">
+      <SubType>Code</SubType>
+      <DependentUpon>wpFrame.xml</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it. 
+		
+	<Target Name="BeforeClean"></Target>
+	<Target Name="AfterClean"></Target>
+	<Target Name="BeforeRebuild"></Target>
+	<Target Name="AfterRebuild"></Target>
+	<Target Name="BeforeDeploy"></Target>
+	<Target Name="AfterDeploy"></Target>
+	-->
+</Project>
