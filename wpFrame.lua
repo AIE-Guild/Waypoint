@@ -52,7 +52,7 @@ local function displayAutoClose()
 
 end
 
-local function setAutoClose(flag)
+local function updateAutoClose(flag)
 
     if Waypoint.auto_close then
         Waypoint.auto_close = false;
@@ -112,11 +112,11 @@ function wpFrame_OnEvent(event, arg1)
 end
 
 function wpFrame_OnLoad()
-    
+
     SLASH_WAYPOINT1 = "/wp";
     SLASH_WAYPOINT2 = "/waypoint";
 
-    local function wpSlashCmd()
+    local function wpSlashCmd(arg1, arg2)
         wpFrame:Show();
     end
 
@@ -255,3 +255,23 @@ function wpConList_OnShow()
 
 end
 
+function wpConNameSortButton_OnClick()
+    
+    table.sort(Waypoint.contact, function(a,b) return a.name < b.name end);
+    updateConList();
+
+end
+
+function wpConLevelSortButton_OnClick()
+    
+    table.sort(Waypoint.contact, function(a,b) return a.level < b.level end);
+    updateConList();
+
+end
+
+function wpConTimestampSortButton_OnClick()
+    
+    table.sort(Waypoint.contact, function(a,b) return a.tstamp < b.tstamp end);
+    updateConList();
+
+end

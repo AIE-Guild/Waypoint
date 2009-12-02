@@ -1,9 +1,15 @@
 ﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="wpFrame.lua" />
-	<Button name="wpConEntryTemplate" virtual="true">
+	<Button name="wpConEntryTemplate" virtual="true" inherits="SecureActionButtonTemplate">
 		<Size>
 			<AbsDimension x="532" y="24" />
 		</Size>
+		<Backdrop />
+		<ButtonText justifyH="LEFT">
+			<Size>
+				<AbsDimension x="275" y="0" />
+			</Size>
+		</ButtonText>
 		<NormalFont style="GameFontNormal" />
 	</Button>
 	<Frame name="wpFrame" parent="UIParent" toplevel="true" movable="true" enableMouse="true">
@@ -94,6 +100,9 @@
 						<Offset x="102" y="-180" />
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnClick>wpConNameSortButton_OnClick();</OnClick>
+				</Scripts>
 			</Button>
 			<Button name="wpConLevelSortButton" inherits="UIPanelButtonTemplate" text="Level">
 				<Size>
@@ -104,6 +113,9 @@
 						<Offset x="236" y="-180" />
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnClick>wpConLevelSortButton_OnClick();</OnClick>
+				</Scripts>
 			</Button>
 			<Button name="wpConTimestampSortButton" inherits="UIPanelButtonTemplate" text="Timestamp">
 				<Size>
@@ -114,6 +126,9 @@
 						<Offset x="370" y="-180" />
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnClick>wpConTimestampSortButton_OnClick();</OnClick>
+				</Scripts>
 			</Button>
 			<Button name="wpMsgCancelButton" inherits="UIPanelButtonTemplate" text="Cancel">
 				<Size>
