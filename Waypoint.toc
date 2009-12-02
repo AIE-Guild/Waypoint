@@ -4,4 +4,5 @@
 ## Title: Waypoint
 ## Version: 0.9
 wpFrame.lua
+Waypoint_GameTime.lua
 wpFrame.xml

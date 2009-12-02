@@ -7,28 +7,14 @@ Create Date : 11/16/2009 1:36:31 PM
 
 --[[-----------------------------------------------------------------------
 
-Slash Commands
-
---]]-----------------------------------------------------------------------
-
-SLASH_WAYPOINT1 = "/wp";
-SLASH_WAYPOINT2 = "/waypoint";
-
-local function wpSlashCmd()
-    wpFrame:Show();
-end
-
-SlashCmdList["WAYPOINT"] = wpSlashCmd;
-
-
---[[-----------------------------------------------------------------------
-
 Control Utility Functions
 
 --]]-----------------------------------------------------------------------
 
 
 local function displayStatus()
+
+    if Waypoint == nil then return end;
 
     if Waypoint.enable then
         wpToggleButton:SetText("Disable");
@@ -56,6 +42,8 @@ end
 
 local function displayAutoClose()
 
+    if Waypoint == nil then return end;
+
     if Waypoint.auto_close then
         wpAutoCloseCheckButton:SetChecked(false);
     else
@@ -78,6 +66,8 @@ end
 
 local function displayMsgText()
 
+    if Waypoint == nil then return end;
+
     wpMsgEditBox:SetText(Waypoint.message);
     wpMsgSaveButton:Disable();
     wpMsgCancelButton:Disable();
@@ -98,7 +88,7 @@ Frame Event Functions
 
 --]]-----------------------------------------------------------------------
 
-function wpFrame_OnEvent()
+function wpFrame_OnEvent(event, arg1)
     if event == "ADDON_LOADED" and arg1 == "Waypoint" then
 
         -- initialize the data if needed
@@ -109,25 +99,34 @@ function wpFrame_OnEvent()
                 message     = "",
                 contact     = {},
             }
-
-            -- Test data
-            for i = 1, 24 do
-                Waypoint["contact"][i] = {
-                    name	= "Test" .. i,
-                    level	= ((i * time()) % 80) + 1,
-                    tstamp	= time(),
-                }
-            end
-
         end
+
+        -- make sure the everything displayed correctly
+        displayStatus();
+        displayAutoClose();
+        displayMsgText();
+        updateConList();
 
     end
 
 end
 
 function wpFrame_OnLoad()
+    
+    SLASH_WAYPOINT1 = "/wp";
+    SLASH_WAYPOINT2 = "/waypoint";
+
+    local function wpSlashCmd()
+        wpFrame:Show();
+    end
+
+    SlashCmdList["WAYPOINT"] = wpSlashCmd;
+
+    this:RegisterEvent("ADDON_LOADED");
+
     -- Close window on ESC
     tinsert(UISpecialFrames,this:GetName());
+
 end
 
 function wpFrame_OnShow()
@@ -136,6 +135,7 @@ function wpFrame_OnShow()
     displayStatus();
     displayAutoClose();
     displayMsgText();
+    updateConList();
 
 end
 
@@ -212,11 +212,17 @@ function updateConList()
     local offset;
     local entry;
     local text;
-    local num = #(Waypoint.contact);
+    local num;
+
+    if Waypoint == nil then
+        num = 0;
+    else
+        num = #(Waypoint.contact);
+    end
 
     FauxScrollFrame_Update(wpConList, num, 6, 24);
 
-    for line = 1, 5 do
+    for line = 1, 7 do
 
         offset = FauxScrollFrame_GetOffset(wpConList);
         if (line + offset) < num then
@@ -237,7 +243,7 @@ function updateConList()
 
 end
 
-function wpConList_OnVerticalScroll(self. offset)
+function wpConList_OnVerticalScroll(offset)
 
     FauxScrollFrame_OnVerticalScroll(this, offset, 24, updateConList);
 
@@ -248,3 +254,4 @@ function wpConList_OnShow()
     updateConList();
 
 end
+

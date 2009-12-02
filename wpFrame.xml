@@ -1,60 +1,18 @@
 ﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="Frame.lua" />
+	<Script file="wpFrame.lua" />
 	<Button name="wpConEntryTemplate" virtual="true">
 		<Size>
-			<AbsDimension x="564" y="24" />
+			<AbsDimension x="532" y="24" />
 		</Size>
-		<NormalFont style="GameFontNormal"/>
-	</Button>
-	<Button name="wpConEntry1" inherits="wpConEntryTemplate">
-		<Anchors>
-			<Anchor point="TOPLEFT" relativeTo="wpConList" relativePoint="TOPLEFT">
-				<Offset x="32" y="-32" />
-			</Anchor>
-		</Anchors>
-	</Button>
-	<Button name="wpConEntry2" inherits="wpConEntryTemplate">
-		<Anchors>
-			<Anchor point="TOPLEFT" relativeTo="wpConEntry1" relativePoint="BOTTOMLEFT">
-				<Offset x="0" y="0" />
-			</Anchor>
-		</Anchors>
-	</Button>
-	<Button name="wpConEntry3" inherits="wpConEntryTemplate">
-		<Anchors>
-			<Anchor point="TOPLEFT" relativeTo="wpConEntry2" relativePoint="BOTTOMLEFT">
-				<Offset x="0" y="0" />
-			</Anchor>
-		</Anchors>
-	</Button>
-	<Button name="wpConEntry4" inherits="wpConEntryTemplate">
-		<Anchors>
-			<Anchor point="TOPLEFT" relativeTo="wpConEntry3" relativePoint="BOTTOMLEFT">
-				<Offset x="0" y="0" />
-			</Anchor>
-		</Anchors>
-	</Button>
-	<Button name="wpConEntry5" inherits="wpConEntryTemplate">
-		<Anchors>
-			<Anchor point="TOPLEFT" relativeTo="wpConEntry4" relativePoint="BOTTOMLEFT">
-				<Offset x="0" y="0" />
-			</Anchor>
-		</Anchors>
-	</Button>
-	<Button name="wpConEntry6" inherits="wpConEntryTemplate">
-		<Anchors>
-			<Anchor point="TOPLEFT" relativeTo="wpConEntry5" relativePoint="BOTTOMLEFT">
-				<Offset x="0" y="0" />
-			</Anchor>
-		</Anchors>
+		<NormalFont style="GameFontNormal" />
 	</Button>
 	<Frame name="wpFrame" parent="UIParent" toplevel="true" movable="true" enableMouse="true">
 		<Size>
-			<AbsDimension x="640" y="480" />
+			<AbsDimension x="640" y="470" />
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER">
-				<Offset x="5" y="-8" />
+				<Offset x="5" y="0" />
 			</Anchor>
 		</Anchors>
 		<TitleRegion setAllPoints="true">
@@ -123,7 +81,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="32" y="-424" />
+						<Offset x="32" y="-416" />
 					</Anchor>
 				</Anchors>
 			</Button>
@@ -215,7 +173,7 @@
 			</EditBox>
 			<ScrollFrame name="wpConList" inherits="FauxScrollFrameTemplate">
 				<Size>
-					<AbsDimension x="564" y="208" />
+					<AbsDimension x="564" y="200" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
@@ -234,10 +192,59 @@
 					</EdgeSize>
 				</Backdrop>
 				<Scripts>
-					<OnVerticalScroll>wpConList_OnVerticalScroll();</OnVerticalScroll>
+					<OnVerticalScroll>wpConList_OnVerticalScroll(offset);</OnVerticalScroll>
 					<OnShow>wpConList_OnShow();</OnShow>
 				</Scripts>
 			</ScrollFrame>
+			<Button name="wpConEntry1" inherits="wpConEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="wpConList" relativePoint="TOPLEFT">
+						<Offset x="16" y="-16" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="wpConEntry2" inherits="wpConEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="wpConEntry1" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="wpConEntry3" inherits="wpConEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="wpConEntry2" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="wpConEntry4" inherits="wpConEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="wpConEntry3" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="wpConEntry5" inherits="wpConEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="wpConEntry4" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="wpConEntry6" inherits="wpConEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="wpConEntry5" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="wpConEntry7" inherits="wpConEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="wpConEntry6" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+			</Button>
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
@@ -295,7 +302,7 @@
 		</Layers>
 		<Scripts>
 			<OnLoad>wpFrame_OnLoad();</OnLoad>
-			<OnEvent>wpFrame_OnEvent();</OnEvent>
+			<OnEvent>wpFrame_OnEvent(event, arg1);</OnEvent>
 			<OnShow>wpFrame_OnShow();</OnShow>
 		</Scripts>
 	</Frame>
