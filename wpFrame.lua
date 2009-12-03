@@ -67,8 +67,10 @@ local function wpUpdateStatus(flag)
 
     if Waypoint.enable then
         Waypoint.enable = false;
+        this:UnregisterEvent("TRADE_SHOW");
     else
         Waypoint.enable = true;
+        this:RegisterEvent("TRADE_SHOW");
     end
 
     wpDisplayStatus();
@@ -126,7 +128,9 @@ Frame Event Functions
 function wpFrame_OnEvent(event, arg1)
     if event == "ADDON_LOADED" and arg1 == "Waypoint" then
 
+        --
         -- initialize the data if needed
+        --
         if Waypoint == nil then
             Waypoint = {
                 enable      = false,
@@ -136,11 +140,55 @@ function wpFrame_OnEvent(event, arg1)
             }
         end
 
+        --
         -- make sure the everything displayed correctly
+        --
         wpDisplayStatus();
         wpDisplayAutoClose();
         wpDisplayMsgText();
         wpUpdateConList();
+
+        --
+        -- listen for trade windows, if enabled
+        --
+        if Waypoint.enable then
+            this:RegisterEvent("TRADE_SHOW");
+        end
+
+    elseif event == "TRADE_SHOW" then
+   
+        --
+        -- gather contact info
+        --
+        name, realm = UnitName("NPC");
+        level       = UnitLevel("NPC");
+        tstamp      = date("%Y-%m-%d %H:%M:%S");
+
+        -- 
+        -- include realm if on a cross-realm server
+        --
+        if not realm == nil then
+            name = name .. "-" .. realm;
+        end
+
+        --
+        -- check for auto-close
+        --
+        if Waypoint.auto_close then
+            CloseTrade();
+        end
+
+        --
+        -- add the contact to the list
+        --
+        --[[
+        if Waypoint["contact"][name] == nil then
+            Waypoint["contact"][name] = { name = name, level = level, tstamp = tstamp, tlast = tstamp };
+        else
+            Waypoint["contact"][name]["tlast"] = tstamp;
+        end
+        wpUpdateConList();
+        --]]
 
     end
 

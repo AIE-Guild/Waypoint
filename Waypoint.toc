@@ -2,7 +2,6 @@
 ## Interface: 30200
 ## SavedVariablesPerCharacter: Waypoint
 ## Title: Waypoint
-## Version: 0.9
+## Version: 0.9.00
 wpFrame.lua
-Waypoint_GameTime.lua
 wpFrame.xml
