@@ -1,7 +1,42 @@
 ﻿--[[-----------------------------------------------------------------------
 
-Author      : Mark Rogaski
-Create Date : 11/16/2009 1:36:31 PM
+Author: Mark Rogaski
+
+$Id$
+
+
+    Copyright (c) 2009; Mark Rogaski.
+
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without 
+    modification, are permitted provided that the following conditions 
+    are met:
+
+        * Redistributions of source code must retain the above copyright 
+          notice, this list of conditions and the following disclaimer.
+
+        * Redistributions in binary form must reproduce the above 
+          copyright notice, this list of conditions and the following
+          disclaimer in the documentation and/or other materials provided
+          with the distribution.
+
+        * Neither the name of the copyright holder nor the names of any
+          contributors may be used to endorse or promote products derived
+          from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+    OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 
 --]]-----------------------------------------------------------------------
 
@@ -12,7 +47,7 @@ Control Utility Functions
 --]]-----------------------------------------------------------------------
 
 
-local function displayStatus()
+local function wpDisplayStatus()
 
     if Waypoint == nil then return end;
 
@@ -28,7 +63,7 @@ local function displayStatus()
 
 end
 
-local function updateStatus(flag)
+local function wpUpdateStatus(flag)
 
     if Waypoint.enable then
         Waypoint.enable = false;
@@ -36,11 +71,11 @@ local function updateStatus(flag)
         Waypoint.enable = true;
     end
 
-    displayStatus();
+    wpDisplayStatus();
 
 end
 
-local function displayAutoClose()
+local function wpDisplayAutoClose()
 
     if Waypoint == nil then return end;
 
@@ -52,7 +87,7 @@ local function displayAutoClose()
 
 end
 
-local function updateAutoClose(flag)
+local function wpUpdateAutoClose(flag)
 
     if Waypoint.auto_close then
         Waypoint.auto_close = false;
@@ -60,11 +95,11 @@ local function updateAutoClose(flag)
         Waypoint.auto_close = true;
     end
 
-    displayAutoClose();
+    wpDisplayAutoClose();
 
 end
 
-local function displayMsgText()
+local function wpDisplayMsgText()
 
     if Waypoint == nil then return end;
 
@@ -77,7 +112,7 @@ end
 local function updateMsgText(msg)
 
     Waypoint.message = msg;
-    displayMsgText();
+    wpDisplayMsgText();
 
 end
 
@@ -102,10 +137,10 @@ function wpFrame_OnEvent(event, arg1)
         end
 
         -- make sure the everything displayed correctly
-        displayStatus();
-        displayAutoClose();
-        displayMsgText();
-        updateConList();
+        wpDisplayStatus();
+        wpDisplayAutoClose();
+        wpDisplayMsgText();
+        wpUpdateConList();
 
     end
 
@@ -113,6 +148,9 @@ end
 
 function wpFrame_OnLoad()
 
+    --
+    -- set up slash commands
+    --
     SLASH_WAYPOINT1 = "/wp";
     SLASH_WAYPOINT2 = "/waypoint";
 
@@ -122,20 +160,27 @@ function wpFrame_OnLoad()
 
     SlashCmdList["WAYPOINT"] = wpSlashCmd;
 
+    --
+    -- trap the events we are interested in 
+    --
     this:RegisterEvent("ADDON_LOADED");
 
+    --
     -- Close window on ESC
+    --
     tinsert(UISpecialFrames,this:GetName());
 
 end
 
 function wpFrame_OnShow()
 
+    --
     -- make sure the everything displayed correctly
-    displayStatus();
-    displayAutoClose();
-    displayMsgText();
-    updateConList();
+    --
+    wpDisplayStatus();
+    wpDisplayAutoClose();
+    wpDisplayMsgText();
+    wpUpdateConList();
 
 end
 
@@ -154,13 +199,13 @@ end
 
 function wpToggleButton_OnClick()
 
-    updateStatus(true);
+    wpUpdateStatus(true);
 
 end
 
 function wpAutoCloseCheckButton_OnClick()
 
-    updateAutoClose(true);
+    wpUpdateAutoClose(true);
 
 end
 
@@ -173,7 +218,7 @@ end
 
 function wpMsgEditBox_OnHide()
 
-    displayMsgText();
+    wpDisplayMsgText();
 
 end
 
@@ -184,7 +229,7 @@ end
 function wpMsgSaveButton_OnClick()
 
     Waypoint.message = wpMsgEditBox:GetText();
-    displayMsgText();
+    wpDisplayMsgText();
 
 end
 
@@ -202,11 +247,11 @@ function wpMsgCancelButton_OnClick()
 
     wpMsgSaveButton:Disable();
     wpMsgCancelButton:Disable();
-    displayMsgText();
+    wpDisplayMsgText();
 
 end
 
-function updateConList()
+function wpUpdateConList()
 
     local line;
     local offset;
@@ -245,33 +290,33 @@ end
 
 function wpConList_OnVerticalScroll(offset)
 
-    FauxScrollFrame_OnVerticalScroll(this, offset, 24, updateConList);
+    FauxScrollFrame_OnVerticalScroll(this, offset, 24, wpUpdateConList);
 
 end
 
 function wpConList_OnShow()
 
-    updateConList();
+    wpUpdateConList();
 
 end
 
 function wpConNameSortButton_OnClick()
     
     table.sort(Waypoint.contact, function(a,b) return a.name < b.name end);
-    updateConList();
+    wpUpdateConList();
 
 end
 
 function wpConLevelSortButton_OnClick()
     
     table.sort(Waypoint.contact, function(a,b) return a.level < b.level end);
-    updateConList();
+    wpUpdateConList();
 
 end
 
 function wpConTimestampSortButton_OnClick()
     
     table.sort(Waypoint.contact, function(a,b) return a.tstamp < b.tstamp end);
-    updateConList();
+    wpUpdateConList();
 
 end
