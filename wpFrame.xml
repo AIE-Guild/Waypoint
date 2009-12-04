@@ -7,7 +7,7 @@
 		<Backdrop />
 		<ButtonText justifyH="LEFT">
 			<Size>
-				<AbsDimension x="275" y="0" />
+				<AbsDimension x="532" y="24" />
 			</Size>
 		</ButtonText>
 		<NormalFont style="GameFontNormal" />
@@ -90,6 +90,9 @@
 						<Offset x="32" y="-416" />
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnClick>wpConClearButton_OnClick();</OnClick>
+				</Scripts>
 			</Button>
 			<Button name="wpConNameSortButton" inherits="UIPanelButtonTemplate" text="Name">
 				<Size>

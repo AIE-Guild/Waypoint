@@ -17,9 +17,6 @@
     <Content Include="Waypoint.toc">
       <SubType>TableOfContents</SubType>
     </Content>
-    <Content Include="Waypoint_GameTime.lua">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="wpFrame.xml">
       <SubType>Frame</SubType>
     </Content>

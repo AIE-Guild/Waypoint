@@ -1,22 +1,19 @@
 ﻿--[[-----------------------------------------------------------------------
 
-Author: Mark Rogaski
-
-$Id$
-
+    $Id$
 
     Copyright (c) 2009; Mark Rogaski.
 
     All rights reserved.
 
-    Redistribution and use in source and binary forms, with or without 
-    modification, are permitted provided that the following conditions 
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
     are met:
 
-        * Redistributions of source code must retain the above copyright 
+        * Redistributions of source code must retain the above copyright
           notice, this list of conditions and the following disclaimer.
 
-        * Redistributions in binary form must reproduce the above 
+        * Redistributions in binary form must reproduce the above
           copyright notice, this list of conditions and the following
           disclaimer in the documentation and/or other materials provided
           with the distribution.
@@ -30,7 +27,7 @@ $Id$
     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
     A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
     OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
     LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
     DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
     THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
@@ -48,8 +45,6 @@ Control Utility Functions
 
 
 local function wpDisplayStatus()
-
-    if Waypoint == nil then return end;
 
     if Waypoint.enable then
         wpToggleButton:SetText("Disable");
@@ -79,17 +74,15 @@ end
 
 local function wpDisplayAutoClose()
 
-    if Waypoint == nil then return end;
-
     if Waypoint.auto_close then
-        wpAutoCloseCheckButton:SetChecked(false);
-    else
         wpAutoCloseCheckButton:SetChecked(true);
+    else
+        wpAutoCloseCheckButton:SetChecked(false);
     end
 
 end
 
-local function wpUpdateAutoClose(flag)
+local function wpUpdateAutoClose()
 
     if Waypoint.auto_close then
         Waypoint.auto_close = false;
@@ -102,8 +95,6 @@ local function wpUpdateAutoClose(flag)
 end
 
 local function wpDisplayMsgText()
-
-    if Waypoint == nil then return end;
 
     wpMsgEditBox:SetText(Waypoint.message);
     wpMsgSaveButton:Disable();
@@ -156,7 +147,7 @@ function wpFrame_OnEvent(event, arg1)
         end
 
     elseif event == "TRADE_SHOW" then
-   
+
         --
         -- gather contact info
         --
@@ -164,7 +155,7 @@ function wpFrame_OnEvent(event, arg1)
         level       = UnitLevel("NPC");
         tstamp      = date("%Y-%m-%d %H:%M:%S");
 
-        -- 
+        --
         -- include realm if on a cross-realm server
         --
         if not realm == nil then
@@ -179,16 +170,27 @@ function wpFrame_OnEvent(event, arg1)
         end
 
         --
+        -- whisper the individual
+        --
+        SendChatMessage(Waypoint.message, "WHISPER", nil, name);
+
+        --
         -- add the contact to the list
         --
-        --[[
-        if Waypoint["contact"][name] == nil then
-            Waypoint["contact"][name] = { name = name, level = level, tstamp = tstamp, tlast = tstamp };
-        else
-            Waypoint["contact"][name]["tlast"] = tstamp;
+        local pos = nil;
+        for i, str in ipairs(Waypoint.contact) do
+            if str == name then
+                pos = i;
+                break;
+            end
         end
+
+        if pos == nil then
+            table.insert(Waypoint.contact,
+                    { name = name, level = level, tstamp = tstamp });
+        end
+
         wpUpdateConList();
-        --]]
 
     end
 
@@ -209,7 +211,23 @@ function wpFrame_OnLoad()
     SlashCmdList["WAYPOINT"] = wpSlashCmd;
 
     --
-    -- trap the events we are interested in 
+    -- set up pop-up dialogs
+    --
+    StaticPopupDialogs["WAYPOINT_CLEAR_CONFIRM"] = {
+        text = "Do you want to clear the contact data?",
+        button1 = "Yes",
+        button2 = "No",
+        OnAccept = function()
+            Waypoint.contact = {};
+            wpUpdateConList();
+        end,
+        timeout = 0,
+        whileDead = true,
+        hideOnEscape = true,
+    }
+
+    --
+    -- trap the events we are interested in
     --
     this:RegisterEvent("ADDON_LOADED");
 
@@ -317,12 +335,15 @@ function wpUpdateConList()
 
     for line = 1, 7 do
 
-        offset = FauxScrollFrame_GetOffset(wpConList);
-        if (line + offset) < num then
+        index = line + FauxScrollFrame_GetOffset(wpConList);
 
-            entry = Waypoint["contact"][line + offset];
-            text  = entry.name .. " (" .. entry.level .. "), " .. entry.tstamp;
+        if index <= num then
 
+            text  = format("%s (%d) at %s",
+                    Waypoint["contact"][index]["name"],
+                    Waypoint["contact"][index]["level"],
+                    Waypoint["contact"][index]["tstamp"]
+                );
             getglobal("wpConEntry" .. line):SetText(text);
             getglobal("wpConEntry" .. line):Show();
 
@@ -349,22 +370,26 @@ function wpConList_OnShow()
 end
 
 function wpConNameSortButton_OnClick()
-    
+
     table.sort(Waypoint.contact, function(a,b) return a.name < b.name end);
     wpUpdateConList();
 
 end
 
 function wpConLevelSortButton_OnClick()
-    
+
     table.sort(Waypoint.contact, function(a,b) return a.level < b.level end);
     wpUpdateConList();
 
 end
 
 function wpConTimestampSortButton_OnClick()
-    
+
     table.sort(Waypoint.contact, function(a,b) return a.tstamp < b.tstamp end);
     wpUpdateConList();
 
+end
+
+function wpConClearButton_OnClick()
+    StaticPopup_Show("WAYPOINT_CLEAR_CONFIRM");
 end
