@@ -37,6 +37,9 @@
 
 --]]-----------------------------------------------------------------------
 
+wpVersion = "0.9.01";
+
+
 --[[-----------------------------------------------------------------------
 
 Control Utility Functions
@@ -46,7 +49,7 @@ Control Utility Functions
 
 local function wpDisplayStatus()
 
-    if Waypoint.enable then
+    if wpConfig.enable then
         wpToggleButton:SetText("Disable");
         wpStatusText:SetText("Enabled");
         wpStatusText:SetTextColor(0, 1, 0, 1);
@@ -60,11 +63,11 @@ end
 
 local function wpUpdateStatus(flag)
 
-    if Waypoint.enable then
-        Waypoint.enable = false;
+    if wpConfig.enable then
+        wpConfig.enable = false;
         this:UnregisterEvent("TRADE_SHOW");
     else
-        Waypoint.enable = true;
+        wpConfig.enable = true;
         this:RegisterEvent("TRADE_SHOW");
     end
 
@@ -74,7 +77,7 @@ end
 
 local function wpDisplayAutoClose()
 
-    if Waypoint.auto_close then
+    if wpConfig.auto_close then
         wpAutoCloseCheckButton:SetChecked(true);
     else
         wpAutoCloseCheckButton:SetChecked(false);
@@ -84,10 +87,10 @@ end
 
 local function wpUpdateAutoClose()
 
-    if Waypoint.auto_close then
-        Waypoint.auto_close = false;
+    if wpConfig.auto_close then
+        wpConfig.auto_close = false;
     else
-        Waypoint.auto_close = true;
+        wpConfig.auto_close = true;
     end
 
     wpDisplayAutoClose();
@@ -96,7 +99,7 @@ end
 
 local function wpDisplayMsgText()
 
-    wpMsgEditBox:SetText(Waypoint.message);
+    wpMsgEditBox:SetText(wpConfig.message);
     wpMsgSaveButton:Disable();
     wpMsgCancelButton:Disable();
 
@@ -104,7 +107,7 @@ end
 
 local function updateMsgText(msg)
 
-    Waypoint.message = msg;
+    wpConfig.message = msg;
     wpDisplayMsgText();
 
 end
@@ -122,14 +125,19 @@ function wpFrame_OnEvent(event, arg1)
         --
         -- initialize the data if needed
         --
-        if Waypoint == nil then
-            Waypoint = {
+        if wpConfig == nil then
+            wpConfig = {
                 enable      = false,
                 auto_close  = true,
                 message     = "",
                 contact     = {},
             }
         end
+
+        --
+        -- check config file version
+        --
+        wpConfig.version = wpVersion;
 
         --
         -- make sure the everything displayed correctly
@@ -142,9 +150,11 @@ function wpFrame_OnEvent(event, arg1)
         --
         -- listen for trade windows, if enabled
         --
-        if Waypoint.enable then
+        if wpConfig.enable then
             this:RegisterEvent("TRADE_SHOW");
         end
+
+        ChatFrame1:AddMessage(string.format("|cffff6600Waypoint v%s loaded:|r type /waypoint or /wp.", wpVersion))
 
     elseif event == "TRADE_SHOW" then
 
@@ -165,20 +175,20 @@ function wpFrame_OnEvent(event, arg1)
         --
         -- check for auto-close
         --
-        if Waypoint.auto_close then
+        if wpConfig.auto_close then
             CloseTrade();
         end
 
         --
         -- whisper the individual
         --
-        SendChatMessage(Waypoint.message, "WHISPER", nil, name);
+        SendChatMessage(wpConfig.message, "WHISPER", nil, name);
 
         --
         -- add the contact to the list
         --
         local pos = nil;
-        for i, str in ipairs(Waypoint.contact) do
+        for i, str in ipairs(wpConfig.contact) do
             if str == name then
                 pos = i;
                 break;
@@ -186,7 +196,7 @@ function wpFrame_OnEvent(event, arg1)
         end
 
         if pos == nil then
-            table.insert(Waypoint.contact,
+            table.insert(wpConfig.contact,
                     { name = name, level = level, tstamp = tstamp });
         end
 
@@ -218,7 +228,7 @@ function wpFrame_OnLoad()
         button1 = "Yes",
         button2 = "No",
         OnAccept = function()
-            Waypoint.contact = {};
+            wpConfig.contact = {};
             wpUpdateConList();
         end,
         timeout = 0,
@@ -235,6 +245,11 @@ function wpFrame_OnLoad()
     -- Close window on ESC
     --
     tinsert(UISpecialFrames,this:GetName());
+
+    --
+    -- Wait until the saved variables are loaded
+    --
+    this:Hide();
 
 end
 
@@ -294,7 +309,7 @@ end
 
 function wpMsgSaveButton_OnClick()
 
-    Waypoint.message = wpMsgEditBox:GetText();
+    wpConfig.message = wpMsgEditBox:GetText();
     wpDisplayMsgText();
 
 end
@@ -325,10 +340,10 @@ function wpUpdateConList()
     local text;
     local num;
 
-    if Waypoint == nil then
+    if wpConfig == nil then
         num = 0;
     else
-        num = #(Waypoint.contact);
+        num = #(wpConfig.contact);
     end
 
     FauxScrollFrame_Update(wpConList, num, 6, 24);
@@ -339,17 +354,19 @@ function wpUpdateConList()
 
         if index <= num then
 
-            text  = format("%s (%d) at %s",
-                    Waypoint["contact"][index]["name"],
-                    Waypoint["contact"][index]["level"],
-                    Waypoint["contact"][index]["tstamp"]
+            text = format("%s (%d) at %s",
+                    wpConfig["contact"][index]["name"],
+                    wpConfig["contact"][index]["level"],
+                    wpConfig["contact"][index]["tstamp"]
                 );
             getglobal("wpConEntry" .. line):SetText(text);
             getglobal("wpConEntry" .. line):Show();
 
         else
 
-            getglobal("wpConEntry" .. line):Hide();
+            getglobal("wpConEntry" .. line):SetText("");
+            getglobal("wpConEntry" .. line):Show();
+            --getglobal("wpConEntry" .. line):Hide();
 
         end
 
@@ -371,21 +388,21 @@ end
 
 function wpConNameSortButton_OnClick()
 
-    table.sort(Waypoint.contact, function(a,b) return a.name < b.name end);
+    table.sort(wpConfig.contact, function(a,b) return a.name < b.name end);
     wpUpdateConList();
 
 end
 
 function wpConLevelSortButton_OnClick()
 
-    table.sort(Waypoint.contact, function(a,b) return a.level < b.level end);
+    table.sort(wpConfig.contact, function(a,b) return a.level < b.level end);
     wpUpdateConList();
 
 end
 
 function wpConTimestampSortButton_OnClick()
 
-    table.sort(Waypoint.contact, function(a,b) return a.tstamp < b.tstamp end);
+    table.sort(wpConfig.contact, function(a,b) return a.tstamp < b.tstamp end);
     wpUpdateConList();
 
 end

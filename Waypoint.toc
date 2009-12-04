@@ -1,7 +1,7 @@
 ## Author: Mark Rogaski
 ## Interface: 30200
-## SavedVariablesPerCharacter: Waypoint
+## SavedVariablesPerCharacter: wpConfig
 ## Title: Waypoint
-## Version: 0.9.00
+## Version: 0.9.01
 wpFrame.lua
 wpFrame.xml
