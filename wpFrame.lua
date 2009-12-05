@@ -37,7 +37,7 @@
 
 --]]-----------------------------------------------------------------------
 
-wpVersion = "0.9.01";
+wpVersion = "0.9.02";
 
 
 --[[-----------------------------------------------------------------------
@@ -188,8 +188,8 @@ function wpFrame_OnEvent(event, arg1)
         -- add the contact to the list
         --
         local pos = nil;
-        for i, str in ipairs(wpConfig.contact) do
-            if str == name then
+        for i, p in ipairs(wpConfig.contact) do
+            if p.name == name then
                 pos = i;
                 break;
             end
