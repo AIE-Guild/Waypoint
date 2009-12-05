@@ -2,6 +2,6 @@
 ## Interface: 30200
 ## SavedVariablesPerCharacter: wpConfig
 ## Title: Waypoint
-## Version: 0.9.02
+## Version: 1.0.00
 wpFrame.lua
 wpFrame.xml

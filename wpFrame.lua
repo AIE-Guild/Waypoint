@@ -37,7 +37,7 @@
 
 --]]-----------------------------------------------------------------------
 
-wpVersion = "0.9.02";
+wpVersion = "1.0.00";
 
 
 --[[-----------------------------------------------------------------------
@@ -48,6 +48,8 @@ Control Utility Functions
 
 
 local function wpDisplayStatus()
+
+    if wpConfig == nil then return end
 
     if wpConfig.enable then
         wpToggleButton:SetText("Disable");
@@ -77,6 +79,8 @@ end
 
 local function wpDisplayAutoClose()
 
+    if wpConfig == nil then return end
+
     if wpConfig.auto_close then
         wpAutoCloseCheckButton:SetChecked(true);
     else
@@ -98,6 +102,8 @@ local function wpUpdateAutoClose()
 end
 
 local function wpDisplayMsgText()
+
+    if wpConfig == nil then return end
 
     wpMsgEditBox:SetText(wpConfig.message);
     wpMsgSaveButton:Disable();
@@ -340,11 +346,9 @@ function wpUpdateConList()
     local text;
     local num;
 
-    if wpConfig == nil then
-        num = 0;
-    else
-        num = #(wpConfig.contact);
-    end
+    if wpConfig == nil then return end
+
+    num = #(wpConfig.contact);
 
     FauxScrollFrame_Update(wpConList, num, 6, 24);
 
@@ -364,9 +368,7 @@ function wpUpdateConList()
 
         else
 
-            getglobal("wpConEntry" .. line):SetText("");
-            getglobal("wpConEntry" .. line):Show();
-            --getglobal("wpConEntry" .. line):Hide();
+            getglobal("wpConEntry" .. line):Hide();
 
         end
 
